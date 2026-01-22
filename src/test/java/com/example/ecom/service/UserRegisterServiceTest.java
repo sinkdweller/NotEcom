@@ -1,7 +1,6 @@
 package com.example.ecom.service;
 import com.example.ecom.entity.User;
 import com.example.ecom.repo.UserRepo;
-import com.example.ecom.service.UserRegisterService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
-@SpringBootTest // This starts the full Spring context for the test
+
+@SpringBootTest
 public class UserRegisterServiceTest {
 
     @Autowired
