@@ -39,6 +39,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/h2-console/**").permitAll()
+            .requestMatchers("/testEnd").permitAll()
             // 2. Add this specific line to see if it fixes the 403
             .requestMatchers("/api/**").authenticated() 
             .anyRequest().authenticated()

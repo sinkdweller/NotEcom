@@ -4,24 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
-@Table(name = "sensor_readings") 
-@Data                 // Generates getters, setters, toString, equals, and hashCode
-@NoArgsConstructor    // Generates the empty constructor User() {}
-@AllArgsConstructor   // Generates the full constructor User
 @Entity
+@Table(name = "sensor_readings") 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SensorReading {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
     private long id;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="device_id") // Fixed: This now links to a Device, not a User
+    private Device device; 
 
     private double temperature;
-    private double humidity;
+    private double soilMoisture; 
     private LocalDateTime capturedAt;
-
-
-
 }
