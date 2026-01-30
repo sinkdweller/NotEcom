@@ -55,6 +55,6 @@ public class TelemetryController {
         sensorReadingRepo.save(sensorData);
 
         System.out.println("Received sensorData for device: " + device.getName());
-        return ResponseEntity.ok("Data Logged for: " + device.getName());
+        return ResponseEntity.ok("Data Logged for:d " + device.getName());
     }
     }

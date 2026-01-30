@@ -13,7 +13,6 @@ import com.example.ecom.repo.DeviceRepo;
 import com.example.ecom.repo.UserRepo;
 
 @RestController
-@RequestMapping("/api/devices")
 public class DeviceController {
     private final DeviceRepo deviceRepo;
     private final UserRepo userRepo;
@@ -22,33 +21,31 @@ public class DeviceController {
         this.userRepo=userRepo;
     }
     @PostMapping("/claim")
-    public ResponseEntity<String> claimDevice(@RequestBody ClaimDeviceDto claimDeviceDto){
+public ResponseEntity<String> claimDevice(@RequestBody ClaimDeviceDto dto) {
+    System.out.println("1. Starting claim for MAC: " + dto.getMacAddress());
 
-        //Get the logged-in username from the JWT/Security Context
-        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userRepo.findByUsername(username)
-            .orElseThrow(() -> new RuntimeException("User not found"));
-            
-        Device device = deviceRepo.findByMacAddress(claimDeviceDto.getMacAddress())
-            .map(existingDevice -> {
-                // case device is already owned
-                if (existingDevice.getUser() != null) {
-                    throw new RuntimeException("This device is already claimed.");
-                }
-                return existingDevice;
-            })
-            .orElseGet(() -> {
-                // case device is brand new
-                Device d = new Device();
-                d.setMacAddress(claimDeviceDto.getMacAddress());
-                return d;
-            });
-            device.setName(claimDeviceDto.getName());
-            device.setUser(currentUser);
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-            deviceRepo.save(device);
-        return ResponseEntity.ok("Device added!");
+    User currentUser = userRepo.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("User not found in DB"));
 
+    Device device = deviceRepo.findByMacAddress(dto.getMacAddress())
+        .orElseGet(() -> {
+            Device d = new Device();
+            d.setMacAddress(dto.getMacAddress());
+            return d;
+        });
+
+    if (device.getUser() != null && !device.getUser().equals(currentUser)) {
+        return ResponseEntity.status(409).body("Already claimed by another user.");
     }
+
+    device.setName(dto.getName());
+    device.setUser(currentUser);
+    
+    deviceRepo.save(device);
+
+    return ResponseEntity.ok("Device added!");
+}
     
 }
