@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.ecom.entity.Device;
 import com.example.ecom.repo.DeviceRepo;
 import com.example.ecom.dtos.TelemetryDTO;
@@ -27,6 +26,7 @@ public class TelemetryController {
         this.sensorReadingRepo=sensorReadingRepo;
         this.deviceRepo = deviceRepo;
     }
+
     @PostMapping("/upload")
     @Transactional
     public ResponseEntity<String> postTelemetry(@RequestBody TelemetryDTO telemetryDTO) {
