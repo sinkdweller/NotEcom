@@ -1,0 +1,55 @@
+<div class="top-bar">
+    <div id="left-actions">
+        
+    </div>
+    <div class="right-nav">
+        <a href="/register-device.html">Register Device</a>
+        <a href="/login.html" id="loginLink">Login</a>
+        <button onclick="logout()" class="logout-link">Logout</button>
+    </div>
+</div>
+
+<style>
+        .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+
+    .right-nav a, .logout-link {
+        margin-left: 20px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .right-nav a:hover {
+        color: #4CAF50;
+    }
+
+    .logout-link {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 0;
+    }
+
+    .logout-link:hover {
+        color: #ff4d4d;
+    }
+
+    .green-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin:0;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
