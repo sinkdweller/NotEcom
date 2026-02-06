@@ -20,7 +20,7 @@ tr:nth-child(even) {
 </head>
 <body>
 
-<h2>HTML Table</h2>
+<h2>Data DashBoard</h2>
 
 <table id="dashboard-table">
     <thead> 
@@ -45,7 +45,6 @@ tr:nth-child(even) {
 
 <script>
     let currentPage = 0; // Global variable to track the page
-    const pageSize = 10;
     const token = localStorage.getItem("token");
 
     if(!token){
@@ -93,7 +92,7 @@ tr:nth-child(even) {
         })
 
             const data = await response.json();
-            
+
             document.getElementById("nextBtn").disabled = data.last;
             document.getElementById("prevBtn").disabled = data.first;
             console.log(data);
