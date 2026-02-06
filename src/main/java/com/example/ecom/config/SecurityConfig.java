@@ -54,7 +54,7 @@ public class SecurityConfig {
 
     return http.build();
 }
-
+    //add this once move database from h2 to postgres
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

@@ -22,7 +22,7 @@ tr:nth-child(even) {
 
 <h2>HTML Table</h2>
 
-<table>
+<table id="dashboard-table">
   <tr>
     <th>Device</th>
     <th>Temperature</th>
@@ -30,45 +30,50 @@ tr:nth-child(even) {
     <th>Captured At</th>
 
   </tr>
-  <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td>
-    <td>Germany</td>
-  </tr>
-  <tr>
-    <td>Centro comercial Moctezuma</td>
-    <td>Francisco Chang</td>
-    <td>Mexico</td>
-  </tr>
-  <tr>
-    <td>Ernst Handel</td>
-    <td>Roland Mendel</td>
-    <td>Austria</td>
-  </tr>
-  <tr>
-    <td>Island Trading</td>
-    <td>Helen Bennett</td>
-    <td>UK</td>
-  </tr>
-  <tr>
-    <td>Laughing Bacchus Winecellars</td>
-    <td>Yoshi Tannamuri</td>
-    <td>Canada</td>
-  </tr>
-  <tr>
-    <td>Magazzini Alimentari Riuniti</td>
-    <td>Giovanni Rovelli</td>
-    <td>Italy</td>
-  </tr>
 </table>
-<button onclick="getData()"></button>
+<button onclick="populateTable()"></button>
 </body>
 
 <script>
+    populateTable();
+
+    
+    const token = localStorage.getItem("token");
+    if(!token){
+        window.alert("you must log in first!!");
+        window.location.href = "/login.html";
+    }
+    async function populateTable(){
+        const data = await getData();
+
+        if(!data || !Array.isArray(data)) return;
+        const parent = document.getElementById("dashboard-table");
+        data.forEach(element => {
+            const row = document.createElement("tr");
+            
+            const device = document.createElement("td");
+            const temperature = document.createElement("td");
+            const soilMoisture = document.createElement("td");
+            const capturedAt = document.createElement("td");
+
+            device.innerText = element.deviceName;
+            temperature.innerText = element.temperature;
+            soilMoisture.innerText = element.moisture;
+            capturedAt.innerText=element.capturedAt;
+
+            row.appendChild(device);
+            row.appendChild(temperature);
+            row.appendChild(soilMoisture);
+            row.appendChild(capturedAt);
+
+            parent.appendChild(row);
+
+        });
+    }
     async function getData(){
         const response = await fetch("/api/readings", {
             method: "GET",
-            headers:{"Authorization": `Bearer ${localStorage.getItem("token")}`}
+            headers:{"Authorization": `Bearer ${token}`}
         })
         const data = await response.json();
         console.log(data);
