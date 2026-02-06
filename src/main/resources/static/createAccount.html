@@ -6,23 +6,5 @@
 
 <a href="login.html">login </a>
 
-<script>
 
-    async function doSignup(username, password) {
-
-        const response = await fetch("/auth/signup", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify({username: username, password: password})
-        });
-        if(response.ok){
-            alert("user signup good!");
-        }else{
-            const errorText = await response.text();
-            alert("error: " + errorText);
-        }
-        
-    }
-</script>
+<script src="/auth.js"></script>

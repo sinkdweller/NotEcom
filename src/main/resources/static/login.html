@@ -3,37 +3,10 @@
 <head>
     <title>Login</title>
 </head>
-<script>
-    async function doLogin(){
-        
-        const user = document.getElementById("u").value;
-        const pass = document.getElementById("p").value;
-        const response = await fetch("/auth/login", {
-            method: "POST",
-            headers: {'Content-type': 'Application/json'},
-            body: JSON.stringify({
-                username: user,
-                password: pass
-            }
-            )
-        })
-        const data = await response.json();
-        if(data.token){
-            localStorage.setItem('token', data.token);
-            alert("login success!");
-            
-            window.location.href = "/dashboard.html"
-        }
-        else{
-            alert("login not successful");
-        }
-        
-    }
-</script>
-
+<script src="/auth.js"></script>
     <h1>Login</h1>
     <input id="u" type="text" placeholder="Username">
     <input id="p" type="password" placeholder="Password">
-    <button onclick="doLogin()">Login</button>
+    <button onclick="doLogin(document.getElementById('u').value, document.getElementById('p').value)">Login</button>
     <a href="createAccount.html">Not Registered? Create Account -> </a>
 </html>

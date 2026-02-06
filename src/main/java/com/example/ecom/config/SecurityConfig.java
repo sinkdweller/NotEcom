@@ -37,7 +37,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable()) 
         
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/login.html", "/dashboard.html", "/index.html", "/register-device.html","navbar.html","/navloader.js","createAccount.html").permitAll()
+            .requestMatchers("/auth.js", "/login.html", "/dashboard.html", "/index.html", "/register-device.html","navbar.html","/navloader.js","createAccount.html").permitAll()
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/h2-console/**").permitAll()
             .requestMatchers("/testEnd").permitAll()
