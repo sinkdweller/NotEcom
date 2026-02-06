@@ -23,61 +23,84 @@ tr:nth-child(even) {
 <h2>HTML Table</h2>
 
 <table id="dashboard-table">
-  <tr>
-    <th>Device</th>
-    <th>Temperature</th>
-    <th>Soil Moisture</th>
-    <th>Captured At</th>
+    <thead> 
+        <tr>
+        <th>Device</th>
+        <th>Temperature</th>
+        <th>Soil Moisture</th>
+        <th>Captured At</th>
 
-  </tr>
+    </tr>
+    </thead>
+    <tbody id="dashboard-table-body">
+
+    </tbody>
+
 </table>
-<button onclick="populateTable()"></button>
+<h1 id="pageNumber"></h1>
+<button id="prevBtn" onclick="lastPage()">Back</button>
+<button id="nextBtn" onclick="nextPage()">Next</button>
+<button onclick="populateTable()">Refresh</button>
 </body>
 
 <script>
-    populateTable();
-
-    
+    let currentPage = 0; // Global variable to track the page
+    const pageSize = 10;
     const token = localStorage.getItem("token");
+
     if(!token){
         window.alert("you must log in first!!");
         window.location.href = "/login.html";
+    }else{
+        populateTable();
+        document.getElementById("pageNumber").innerHTML=`page: ${currentPage}`;
     }
+
+    function lastPage(){
+        if(currentPage > 0) {
+            currentPage--;
+            populateTable();
+        }    
+    }
+    function nextPage(){
+        currentPage++;
+        populateTable(currentPage+1);
+    }
+
     async function populateTable(){
-        const data = await getData();
+        document.getElementById("pageNumber").innerHTML = `Page: ${currentPage + 1}`;
+        const data = await getData(currentPage);
 
         if(!data || !Array.isArray(data)) return;
-        const parent = document.getElementById("dashboard-table");
+        const parent = document.getElementById("dashboard-table-body");
+        parent.innerHTML=""; //clear the table for refresh
         data.forEach(element => {
             const row = document.createElement("tr");
-            
-            const device = document.createElement("td");
-            const temperature = document.createElement("td");
-            const soilMoisture = document.createElement("td");
-            const capturedAt = document.createElement("td");
-
-            device.innerText = element.deviceName;
-            temperature.innerText = element.temperature;
-            soilMoisture.innerText = element.moisture;
-            capturedAt.innerText=element.capturedAt;
-
-            row.appendChild(device);
-            row.appendChild(temperature);
-            row.appendChild(soilMoisture);
-            row.appendChild(capturedAt);
-
+            row.innerHTML = `
+                <td>${element.deviceName}</td>
+                <td>${element.temperature}</td>
+                <td>${element.moisture}</td>
+                <td>${new Date(element.capturedAt).toLocaleString()}</td>
+            `;
             parent.appendChild(row);
-
         });
     }
-    async function getData(){
-        const response = await fetch("/api/readings", {
+    async function getData(currentPage){
+        try{
+            const response = await fetch(`/api/readings?page=${currentPage}`, {
             method: "GET",
             headers:{"Authorization": `Bearer ${token}`}
         })
-        const data = await response.json();
-        console.log(data);
-        return data.content;
+
+            const data = await response.json();
+            
+            document.getElementById("nextBtn").disabled = data.last;
+            document.getElementById("prevBtn").disabled = data.first;
+            console.log(data);
+            return data.content; //actual content, not including metadata
+        }catch (error){
+            console.log("Dashboard data fetch error" + error);
+        }
     }
 </script>
 </html>

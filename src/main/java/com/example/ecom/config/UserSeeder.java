@@ -51,7 +51,7 @@ public class UserSeeder implements CommandLineRunner{
             System.out.println("Device '" + initDevice + "' seeded for user: " + initUsername);
 
             //SEED SENSOR READINGS
-            for(int i=0; i<10; i++){
+            for(int i=0; i<25; i++){
                 SensorReading reading = new SensorReading();
                 reading.setDevice(device);
                 reading.setTemperature(20.0 + i); 
