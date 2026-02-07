@@ -15,7 +15,7 @@ public class SensorReading {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name="device_id") // Fixed: This now links to a Device, not a User
+    @JoinColumn(name="device_id") 
     private Device device; 
 
     private double temperature;

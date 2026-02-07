@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data                 // Generates getters, setters, toString, equals, and hashCode
-@AllArgsConstructor   // Generates the full constructor User
+@AllArgsConstructor   
 @NoArgsConstructor
 public class LoginResponse {
 
@@ -17,5 +17,5 @@ public class LoginResponse {
         return token;
     }
 
- // Getters and setters...
+
 }

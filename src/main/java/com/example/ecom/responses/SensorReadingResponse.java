@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data                 // Generates getters, setters, toString, equals, and hashCode
-@AllArgsConstructor   // Generates the full constructor User
+@AllArgsConstructor  
 @NoArgsConstructor
 public class SensorReadingResponse {
     private String deviceName;

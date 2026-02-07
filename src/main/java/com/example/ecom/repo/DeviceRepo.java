@@ -7,10 +7,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface DeviceRepo extends JpaRepository<Device, Long> {
-    // Allows  Service to find the "Kitchen Fern" by its hardware ID
+
+    List<Device> findAllByUserId(Long userId);
+    
     Optional<Device> findByMacAddress(String macAddress);
     @Transactional
     @Modifying

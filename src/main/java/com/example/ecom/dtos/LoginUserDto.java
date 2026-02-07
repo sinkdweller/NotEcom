@@ -8,5 +8,4 @@ public class LoginUserDto {
     private String username;
     private String password;
     
-    // getters and setters here...
 }
