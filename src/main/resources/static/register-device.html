@@ -1,24 +1,63 @@
 <html>
     <head>
-        <style>
-            body {
-                font-family: arial, sans-serif;
-            }
-
-        </style>
+        <link rel="stylesheet" href="/style.css">
         <script src="/navloader.js" defer></script>
     </head>
     <body>
-        <table>
-            <thead>
-                <tr>
-                    <th>MacAddress</th>
-                    <th>Device Name</th>
-                </tr>
-            </thead>
-        </table>
-    </body>
+        <div class="vertical-contain">
+            <table>
+                <thead>
+                    <tr>
+                        <th>MacAddress</th>
+                        <th>Device Name</th>
+                    </tr>
+                </thead>
+                <tbody id="data-dashboard-body">
+
+                </tbody>
+            </table>
+            <p id="page-number"></p>
+            <div class="horizontal-contain">
+                <button id="nextBtn-device">next</button>
+                <button id="prevBtn-device">prev</button>
+            </div>
+
+        </div>
         
+    </body>
+    <script>
+        let currentPage=0;
+        populateDeviceTable();
+        async function populateDeviceTable(){
+            document.getElementById("page-number").innerHTML= currentPage;
+            const page = await getDeviceData();
+            const parent = document.getElementById("data-dashboard-body");
+            parent.innerHTML=""; //clear the table for refresh
+
+            page.forEach(a =>{
+                const row = document.createElement("tr");
+                row.innerHTML=`<td>${a.macAddress}</td><td>${a.name}</td>`
+                parent.appendChild(row);
+            })
+        }
+        async function getDeviceData(){
+            const token = localStorage.getItem("token");
+            try{
+                const response = await fetch(`/api/ownedDevices?page=${currentPage}`, {
+                    method: "GET",
+                    headers: {Authorization: `Bearer ${token}`}
+                })
+                const data = await response.json();
+                document.getElementById("nextBtn-device").disabled = data.last;
+                document.getElementById("prevBtn-device").disabled = data.first;
+                console.log(data);
+                return data.content;
+            }
+            catch(error){
+                console.log("device dashboard failed to get data");
+            }
+        }
+    </script>
 
 
 </html>
