@@ -41,5 +41,6 @@ plug in soil and enjoy
 Spring boot Java 17 Maven C++ Arduino Framework WifiManager by tzapu
 
 I used captive portal (via WiFiManager by Tzapu) to allow end-users to configure Wi-Fi credentials and the server's local IP dynamically. 
+I did spring security to issue tokens
 
 
