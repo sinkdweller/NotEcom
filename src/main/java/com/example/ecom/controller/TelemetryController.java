@@ -34,7 +34,7 @@ public class TelemetryController {
         this.deviceRepo = deviceRepo;
         this.pendClaimsRepo=pendClaimsrepo;
     }
-    @PostMapping("pendClaim")
+    @PostMapping("/device/pendClaim")
     public ResponseEntity<String> pendClaim(@RequestBody PendClaimDto dto){
         Optional<PendClaims> existing = pendClaimsRepo.findByMacAddress(dto.getMacAddress());
             
@@ -54,7 +54,7 @@ public class TelemetryController {
             return ResponseEntity.ok("Claim request registered! Awaiting user verification");
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/device/upload")
     @Transactional
     public ResponseEntity<String> postTelemetry(@RequestBody TelemetryDTO telemetryDTO) {
 
