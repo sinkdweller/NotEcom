@@ -58,18 +58,10 @@ public class TelemetryController {
     @Transactional
     public ResponseEntity<String> postTelemetry(@RequestBody TelemetryDTO telemetryDTO) {
 
-        //Get the logged-in username from the JWT/Security Context
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         //make sure this device exists in  DB first
         Device device = deviceRepo.findByMacAddress(telemetryDTO.getMacAddress())
             .orElseThrow(() -> new RuntimeException("Device not found with MAC: " + telemetryDTO.getMacAddress()));
-
-        // Does this device actually belong to the logged-in user
-        if (!device.getUser().getUsername().equals(username)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body("You do not own this device.");
-        }
 
         //Map DTO to Entity
         SensorReading sensorData = new SensorReading();

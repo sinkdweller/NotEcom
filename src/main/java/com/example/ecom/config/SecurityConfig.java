@@ -39,7 +39,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth.js", "/login.html", "/style.css", "/dashboard.html", "/index.html", "/register-device.html","navbar.html","/navloader.js","create-account.html").permitAll()
             .requestMatchers("/auth/**").permitAll()
-            .requestMatchers("/api/pendClaim").permitAll()
+            .requestMatchers("/api/device/**").permitAll()
             .requestMatchers("/h2-console/**").permitAll()
             .requestMatchers("/testEnd").permitAll()
             .requestMatchers("/api/**").authenticated() 

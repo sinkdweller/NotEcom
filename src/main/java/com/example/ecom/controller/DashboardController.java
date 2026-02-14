@@ -9,6 +9,8 @@ import com.example.ecom.repo.SensorReadingRepo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.example.ecom.responses.SensorReadingResponse;
 @RestController
 public class DashboardController {
@@ -21,10 +23,12 @@ public class DashboardController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Pageable pageable = PageRequest.of(page, size, Sort.by("capturedAt").descending());
-        Page<SensorReading> readings = readingRepo.findAll(pageable);
+                //Need to only do it for the user that is logged in!!
 
-        return readings.map(a->
+        Page<SensorReading> results = readingRepo.findByDevice_User_Username(username, pageable);
+        return results.map(a->
             new SensorReadingResponse(
                 a.getDevice().getName(),
                 a.getSoilMoisture(),
