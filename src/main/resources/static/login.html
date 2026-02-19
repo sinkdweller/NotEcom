@@ -4,9 +4,16 @@
     <title>Login</title>
 </head>
 <script src="/auth.js"></script>
-    <h1>Login</h1>
-    <input id="u" type="text" placeholder="Username">
-    <input id="p" type="password" placeholder="Password">
-    <button onclick="doLogin(document.getElementById('u').value, document.getElementById('p').value)">Login</button>
-    <a href="create-account.html">Not Registered? Create Account -> </a>
+<link rel="stylesheet" href="/style.css">
+<body>
+
+
+    <div class="vertical-contain">
+        <h1>Login</h1>
+        <input id="u" type="text" placeholder="Username" class="space-around">
+        <input id="p" type="password" placeholder="Password" class="space-around">
+        <button onclick="doLogin(document.getElementById('u').value, document.getElementById('p').value)" class="space-around">Login</button>
+        <a href="create-account.html">Not Registered? Create Account -> </a>
+    </div>
+</body>    
 </html>
