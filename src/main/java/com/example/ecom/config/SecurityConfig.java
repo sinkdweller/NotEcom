@@ -35,12 +35,11 @@ public class SecurityConfig {
     http
         // disable CSRF for Postman/IoT tests
         .csrf(csrf -> csrf.disable()) 
-        
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth.js", "/login.html", "/style.css", "/dashboard.html", "/index.html", "/register-device.html","navbar.html","/navloader.js","create-account.html").permitAll()
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/api/device/**").permitAll()
-            .requestMatchers("/h2-console/**").permitAll()
             .requestMatchers("/testEnd").permitAll()
             .requestMatchers("/api/**").authenticated() 
             
@@ -69,7 +68,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of(
         "http://localhost:8080", 
         "http://127.0.0.1:8080",
-        "http://localhost:4200" 
+        "http://192.168.*.*:8080"
     ));
         configuration.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));

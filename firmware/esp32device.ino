@@ -1,13 +1,20 @@
 #include <WiFiManager.h>
 #include <HTTPClient.h>
+#include "DHT.h"
 
 #define BUTTON 22
 #define LED 23
+#define DHTPIN 5
+#define DHTTYPE DHT11 
 
+String serverIP = "192.168.2.100";
+String serverPort = "8080";
 
 String deviceSecret = "PLANT-99-XZ"; 
 String mac;
 
+//initialize the DHT sensor
+DHT dht(DHTPIN, DHTTYPE);
 void setup() {
     Serial.begin(115200);
     delay(1000); // Give Serial time to initialize
@@ -28,6 +35,7 @@ void setup() {
         Serial.println("Connected to Wi-Fi!");
         Serial.println("Your Mac address is: " + mac);
     }
+    dht.begin();
 }
 //claim Logic
 bool sentClaimRequest = false;
@@ -80,11 +88,17 @@ void loop() {
       }
     }
     
-    //UPLOAD logic + short polling
+    //UPLOAD logic + short polling: timerDelay set to every 3 seconds.
     if(sentClaimRequest){
       if ((millis() - lastTimeSent) > timerDelay) {
         lastTimeSent = millis();
-        String jsonPayload = "{\"macAddress\":\"" + mac + "\",\"temperature\":25.5,\"soilMoisture\":42}";
+        float temperature = dht.readTemperature(); //celcius reading, pass true for farenheit
+        float humidity = dht.readHumidity();
+        if(isnan(humidity) || isnan(temperature)){
+          Serial.println("failed to get temperature reading");
+          return;
+         }
+        String jsonPayload = "{\"macAddress\":\"" + mac + "\",\"temperature\":" + temperature + ",\"soilMoisture\":"+ humidity +"}";
         int httpResponse = sendPostRequest("/api/device/upload", jsonPayload);
         
         //SHORT BLIPS = PENDING CLAIM, LONG BLIP = SUCCESSFUL DATA UPLOAD
@@ -105,8 +119,7 @@ int sendPostRequest(String endpoint, String payload) {
     if (WiFi.status() != WL_CONNECTED) return -1;
 
     HTTPClient http;
-    String url = "http://192.168.50.10:8080" + endpoint;
-    
+    String url = "http://" + serverIP + ":" + serverPort + endpoint;    
     Serial.print("Attempting: "); Serial.println(url);
 
     http.begin(url);
