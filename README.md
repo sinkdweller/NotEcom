@@ -43,6 +43,9 @@ Spring boot Java 17 Maven C++
 I used captive portal (via WiFiManager by Tzapu) to allow end-users to configure Wi-Fi credentials dynamically. 
 Spring security is implemented to issue jwt tokens for user authentication, so all devices are only visible to the user it's registered to. Users which are not logged in are automatically redirected to the login page. 
 
+# Demo: 
+https://drive.google.com/file/d/12KQ0Ynb4koXozoYHKwrTiuFtvLDfJ9y8/view?usp=sharing
+
 # maybe future features
 - There is backend logic for removing devices, but no interface for users to relocate their devices yet, since all devices have a many to one mapping to users and are only visible to one person. Possibly in the future make it so that a device is visible to multiple users based on different levels of authority.
 - <br>
